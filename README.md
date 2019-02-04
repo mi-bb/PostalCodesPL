@@ -1,4 +1,4 @@
-# (py) Kody Pocztowe
+# PostalCodesPL
 
 Baza danych polskich kodów pocztowych
 
