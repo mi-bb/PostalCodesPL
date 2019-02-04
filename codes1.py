@@ -1,6 +1,8 @@
 # -*- coding: UTF-8 -*-
+#    PostalCodesPL
+#    Version 1.0
 #-----------------------------------------------------------------------------#
-#    Copyright (C) 2016-2019 Michał Bąbik
+#    Copyright (C) 2016-2019 Michal Babik
 #    This file is part of PostalCodesPL
 #
 #    PostalCodesPL is free software: you can redistribute it and/or modify

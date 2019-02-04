@@ -1,4 +1,4 @@
-# PostalCodesPL
+# (py) Kody Pocztowe
 
 Baza danych polskich kodów pocztowych
 
@@ -18,7 +18,7 @@ miejscowości, województwa i ulicy.
  * SQLite 3
 
 OS:
- * GNU/Linux
+ * Linux
  * Windows
 
 # Copyright and license

@@ -5,6 +5,7 @@
 #  |    |   |`---.|    ,---||    |    |   ||   ||---'`---.|    |    
 #  `    `---'`---'`---'`---^`---'`---'`---'`---'`---'`---'`    `---'
 #
+#    Version 1.0
 #    Copyright (C) 2016-2019 Michal Babik
 #
 #    Information about postal codes based on data from the website
