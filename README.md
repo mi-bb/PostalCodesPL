@@ -5,21 +5,31 @@ Baza danych polskich kodów pocztowych
 Jest to baza danych SQLite zawierająca informacje o polskich kodach
 pocztowych - kody oraz dane o miejscowościach i uliach przypisanych
 do tych kodów.
-W paczcie są 2 programy z przykładowym zastosowaniem bazy.
+W paczcie są przykładowe zastosowania bazy w Pythonie i C.
 Za pomocą programu konta1 (konta1.py) po wpisaniu kodu pocztowego
 zostają wyświetlone wszystkie informacje o tym kodzie.
 W programie konta2 (konta2.py) można wyszukać kod pocztowy wybranej
 miejscowości, województwa i ulicy.
+W programie postc (postc.c) można przeglądać informację o kodach
+pocztowych podając pod pocztowy lub nazwę miejscowości.
 
 # Wymagania
 
- * Python 3
- * GTK+ 3
  * SQLite 3
 
 OS:
- * Linux
+
+ * GNU/Linux
  * Windows
+
+## Wymagania (przykłady - C)
+
+ * GCC
+
+## Wymagania (przykłady - Python)
+
+ * Python 3
+ * GTK+ 3
 
 # Copyright and license
 
