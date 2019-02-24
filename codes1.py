@@ -1,22 +1,22 @@
 # -*- coding: UTF-8 -*-
-#    PostalCodesPL
-#    Version 1.0
-#-----------------------------------------------------------------------------#
+#    File:     codes1.py
+#    Version:  1.1
+#    Date:     February 24, 2019
+#    Author:   Michal Babik <michalb1981@o2.pl>
 #    Copyright (C) 2016-2019 Michal Babik
-#    This file is part of PostalCodesPL
 #
-#    PostalCodesPL is free software: you can redistribute it and/or modify
+#    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    PostalCodesPL is distributed in the hope that it will be useful,
+#    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with PostalCodesPL.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 import gi
 gi.require_version('Gtk', '3.0')
@@ -53,14 +53,14 @@ class AppWindow(Gtk.Window):
         en2.connect("changed", self.entry_ch, 3)
         grid.add(en2)
         lab = Gtk.Label()
-        lab.set_markup("<b><i>Wpisz kod pocztowy, którego dane "
-                       "mają być wyświetlone</i></b>")
+        lab.set_markup("<b><i>Enter the zip code for which the data should be"
+                       " displayed</i></b>")
         grid.add(lab)
         vbox1.pack_start(grid, False, True, 8)
         self.model = Gtk.ListStore(str, str, str, str, str, str)
         self.treev = Gtk.TreeView.new_with_model(self.model)
-        for i, n in enumerate(["Miejscowość", "Miejsc. opis", "Ulica", 
-                               "Numer", "Urząd poczt.", "Województwo"]):
+        for i, n in enumerate(["Place", "Place det.", "Street", 
+                               "Number", "Postal unit", "Voivodeship"]):
             rendererText = Gtk.CellRendererText()
             column = Gtk.TreeViewColumn(n, rendererText, text = i)
             column.set_resizable(True)

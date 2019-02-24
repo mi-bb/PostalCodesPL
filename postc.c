@@ -5,7 +5,7 @@
  *  `    `---'`---'`---'`---^`---'`---'`---'`---'`---'`---'`    `---'
  *
  * @file  postc.c
- * @copyright Copyright (C) 2019 Michał Bąbik
+ * @copyright Copyright (C) 2019 Michal Babik
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@
  *
  * Example usr of postal codes sqlite database in c.
  *
- * @date February 22, 2019
- * @version 1.0
- * @author Michał Bąbik <michalb1981@o2.pl>
+ * @date February 24, 2019
+ * @version 1.1
+ * @author Michal Babik <michalb1981@o2.pl>
  */
 #include <stdio.h>
 #include <stdint.h>
@@ -312,18 +312,18 @@ get_pd_column_width (Postal_data *pd_data,
                      int          i_cnt)
 {
     for (int i = 0; i < i_cnt; ++i) {
-        if (strlen(pd_data[i].city_name) > i_width[0])
-            i_width[0] = u8_strlen(pd_data[i].city_name);
-        if (strlen(pd_data[i].voivodeship) > i_width[1])
-            i_width[1] = u8_strlen(pd_data[i].voivodeship);
-        if (strlen(pd_data[i].city_detcr) > i_width[2])
-            i_width[2] = u8_strlen(pd_data[i].city_detcr);
-        if (strlen(pd_data[i].street_name) > i_width[3])
-            i_width[3] = u8_strlen(pd_data[i].street_name);
-        if (strlen(pd_data[i].street_number) > i_width[4])
-            i_width[4] = u8_strlen(pd_data[i].street_number);
-        if (strlen(pd_data[i].post_un) > i_width[5])
-            i_width[5] = u8_strlen(pd_data[i].post_un);
+        if (u8_strlen (pd_data[i].city_name) > i_width[0])
+            i_width[0] = u8_strlen (pd_data[i].city_name);
+        if (u8_strlen (pd_data[i].voivodeship) > i_width[1])
+            i_width[1] = u8_strlen (pd_data[i].voivodeship);
+        if (u8_strlen (pd_data[i].city_detcr) > i_width[2])
+            i_width[2] = u8_strlen (pd_data[i].city_detcr);
+        if (u8_strlen (pd_data[i].street_name) > i_width[3])
+            i_width[3] = u8_strlen (pd_data[i].street_name);
+        if (u8_strlen (pd_data[i].street_number) > i_width[4])
+            i_width[4] = u8_strlen (pd_data[i].street_number);
+        if (u8_strlen (pd_data[i].post_un) > i_width[5])
+            i_width[5] = u8_strlen (pd_data[i].post_un);
     }
 }
 /*----------------------------------------------------------------------------*/
@@ -338,14 +338,14 @@ static void
 print_city_data (City_data *c_data,
                  int        i_cnt)
 {
-    printf ("%3s | %-35s\n", "No", "City name");
+    printf ("%3s | %-35s\n", "No", "Place name");
     for (int i = 0; i < i_cnt; ++i) {
         printf ("%3d | %s (%s)\n",
                 c_data[i].i_no,
                 c_data[i].city_name,
                 c_data[i].voivodeship);
     }
-    printf("\n");
+    printf ("\n");
 }
 /*----------------------------------------------------------------------------*/
 /**
@@ -362,11 +362,11 @@ print_all_info (Postal_data *pd_data,
     uint16_t i_w[6] = {0,0,0,0,0,0};
     get_pd_column_width (pd_data, i_w, i_cnt);
     printf ("| Code  ");
-    printf (" | City");
+    printf (" | Place");
     for (uint16_t j = 0; j < i_w[0] + i_w[1] - 1; ++j)
         printf (" ");
     if (i_w[2] > 0) {
-        printf (" | City det.");
+        printf (" | Place det.");
         for (uint16_t j = 0; j < i_w[2] - 8; ++j)
             printf (" ");
     }
@@ -404,7 +404,7 @@ print_all_info (Postal_data *pd_data,
         }
         printf ("\n");
     }
-    printf("\n");
+    printf ("\n");
 }
 /*----------------------------------------------------------------------------*/
 /**
@@ -445,14 +445,14 @@ get_show_info_by_postal_code (void)
     uint16_t i_rcnt = 0;
     Postal_data *pd_data = NULL;
 
-    memset(ch_getcode, 0, sizeof(ch_getcode));
-    memset(ch_code1, 0, sizeof(ch_code1));
-    memset(ch_code2, 0, sizeof(ch_code2));
+    memset (ch_getcode, 0, sizeof (ch_getcode));
+    memset (ch_code1, 0, sizeof (ch_code1));
+    memset (ch_code2, 0, sizeof (ch_code2));
 
     printf ("Enter postal code : ");
     scanf ("%6s", ch_getcode);
     printf ("\n");
-    if (strlen(ch_getcode) == 6) {
+    if (strlen (ch_getcode) == 6) {
         set_codes (ch_code1, ch_code2, ch_getcode);
         printf ("Results for code %s-%s :\n\n", ch_code1, ch_code2);
         i_rcnt = get_post_code_info (&pd_data, ch_code1, ch_code2);
@@ -487,18 +487,18 @@ get_show_info_by_city_street (void)
     char ch_city[37];
 
     memset (ch_city, 0, sizeof (ch_city));
-    printf ("Enter city name   : ");
+    printf ("Enter place name   : ");
     i_sres = scanf ("%34s", ch_city_t);
     printf ("\n");
-    if (strlen (ch_city_t) < 3) {
-        printf ("City name to short. It shlould have at least 3 letters \n\n");
+    if (u8_strlen (ch_city_t) < 3) {
+        printf ("Place name to short. It shlould have at least 3 letters \n\n");
         return;
     }
     if (strlen (ch_city_t) > 32) {
-        printf ("City name to long. It shlould have at most 32 letters \n\n");
+        printf ("Place name to long. It shlould have at most 32 letters \n\n");
         return;
     }
-    printf ("Results for city like %s :\n\n", ch_city_t);
+    printf ("Results for place like %s :\n\n", ch_city_t);
     sprintf (ch_city, "%%%s%%", ch_city_t);
     i_rcnt = get_city_names_like (&c_data ,ch_city);
     if (i_rcnt == 0) {
@@ -507,11 +507,11 @@ get_show_info_by_city_street (void)
     }
     print_city_data (c_data, i_rcnt);
     if (i_rcnt > 1) {
-        printf ("Choose the city [1-%hd]: ", i_rcnt);
+        printf ("Choose the place [1-%hd]: ", i_rcnt);
         i_sres = scanf ("%d", &i_city);
         printf ("\n");
         if (i_sres == 0 || i_city > i_rcnt || i_city == 0) {
-            printf ("Wrong city number\n\n");
+            printf ("Wrong place number\n\n");
             free (c_data);
             return;
         }
@@ -545,8 +545,8 @@ main (void)
     int i_sres = 0;
     int i_mode = 0;
     printf ("\nDo you want to : \n\n");
-    printf ("[1] Enter postal code and show its cities and streets \n");
-    printf ("[2] Enter city name and find its postal code \n");
+    printf ("[1] Enter postal code and show its places and streets \n");
+    printf ("[2] Enter place name and find its postal code \n");
     printf ("\nSelect mode [1-2] : ");
     i_sres = scanf ("%d", &i_mode);
     if (i_sres != 0 && i_mode > 0 && i_mode < 3) {

@@ -1,22 +1,22 @@
 # -*- coding: UTF-8 -*-
-#    PostalCodesPL
-#    Version 1.0
-#-----------------------------------------------------------------------------#
+#    File:     codes2.py
+#    Version:  1.1
+#    Date:     February 24, 2019
+#    Author:   Michal Babik <michalb1981@o2.pl>
 #    Copyright (C) 2016-2019 Michal Babik
-#    This file is part of PostalCodesPL
 #
-#    PostalCodesPL is free software: you can redistribute it and/or modify
+#    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
 #    (at your option) any later version.
 #
-#    PostalCodesPL is distributed in the hope that it will be useful,
+#    This program is distributed in the hope that it will be useful,
 #    but WITHOUT ANY WARRANTY; without even the implied warranty of
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #    GNU General Public License for more details.
 #
 #    You should have received a copy of the GNU General Public License
-#    along with PostalCodesPL.  If not, see <http://www.gnu.org/licenses/>.
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #-----------------------------------------------------------------------------#
 import gi
 gi.require_version('Gtk', '3.0')
@@ -43,12 +43,12 @@ class AppWindow(Gtk.Window):
         grid.set_margin_end(8);
 
         lab = Gtk.Label()
-        lab.set_markup("<b><i>Wpisz oraz wybierz nazwę miejscowości, "
-                       "województwo i ulicę</i></b>")
+        lab.set_markup("<b><i>Enter and select Place name, "
+                       "Voivodeship and Street</i></b>")
         vbox1.pack_start(lab, False, True, 8)
 
         lab = Gtk.Label()
-        lab.set_label("Miejscowość:")
+        lab.set_label("Place:")
         grid.add(lab)
 
         city_store = Gtk.ListStore(int, str)
@@ -56,12 +56,11 @@ class AppWindow(Gtk.Window):
         self.city_combo.connect("changed", self.on_city_combo_changed)
         self.city_combo.set_entry_text_column(1)
         self.city_combo.set_tooltip_text(
-                "Po wpisaniu minimum 3 znaków zaktualizuje się lista "
-                "pasujących miejscowości")
+                "After entering 3 letters list of pollible Places updates")
         grid.add(self.city_combo)
 
         lab = Gtk.Label()
-        lab.set_label("Województwo:")
+        lab.set_label("Voivodeship:")
         grid.add(lab)
 
         self.voivo_store = Gtk.ListStore(int, str)
@@ -74,21 +73,20 @@ class AppWindow(Gtk.Window):
         grid.add(self.voivo_combo)
 
         lab = Gtk.Label()
-        lab.set_label("Ulica:")
+        lab.set_label("Street:")
         grid.add(lab)
 
         self.street_entry = Gtk.Entry()
         self.street_entry.connect("changed", self.street_entry_changed)
         self.street_entry.set_tooltip_text(
-                "Po wpisaniu minimum 3 znaków informacje o kodzie "
-                "zostaną przefiltrowane")
+                "After entering 3 letters postal code info will be filtered")
         grid.add(self.street_entry)
         
         vbox1.pack_start(grid, False, True, 8)
         self.model = Gtk.ListStore(str, str, str, str, str, str)
         self.treev = Gtk.TreeView.new_with_model(self.model)
-        for i, n in enumerate(["Kod poczt.", "Miejscowość", "Miejsc. opis",
-                               "Ulica", "Numer", "Urząd poczt."]):
+        for i, n in enumerate(["Post code", "Place", "Place det.",
+                               "Street", "Number", "Post unit"]):
             rendererText = Gtk.CellRendererText()
             column = Gtk.TreeViewColumn(n, rendererText, text = i)
             column.set_resizable(True)
