@@ -1,19 +1,12 @@
 # PostalCodesPL
 
-Baza danych polskich kodów pocztowych
+Database with Polish postal codes
 
-Jest to baza danych SQLite zawierająca informacje o polskich kodach
-pocztowych - kody oraz dane o miejscowościach i uliach przypisanych
-do tych kodów.
-W paczcie są przykładowe zastosowania bazy w Pythonie i C.
-Za pomocą programu konta1 (konta1.py) po wpisaniu kodu pocztowego
-zostają wyświetlone wszystkie informacje o tym kodzie.
-W programie konta2 (konta2.py) można wyszukać kod pocztowy wybranej
-miejscowości, województwa i ulicy.
-W programie postc (postc.c) można przeglądać informację o kodach
-pocztowych podając pod pocztowy lub nazwę miejscowości.
+This project contains SQLite database file with details of Polish postal codes
+(City names, Street names, Voivodeship info).
+Package contains examples in C and Python of how to use the database.
 
-# Wymagania
+# Requirements
 
  * SQLite 3
 
@@ -22,14 +15,29 @@ OS:
  * GNU/Linux
  * Windows
 
-## Wymagania (przykłady - C)
+## Requirements (C examples)
 
  * GCC
 
-## Wymagania (przykłady - Python)
+## Requirements (Python examples)
 
  * Python 3
  * GTK+ 3
+
+# PostalCodesPL
+
+Baza danych polskich kodów pocztowych
+
+Jest to baza danych SQLite zawierająca informacje o polskich kodach
+pocztowych - kody oraz dane o miejscowościach i uliach przypisanych
+do tych kodów.
+W paczcie są przykładowe zastosowania bazy w Pythonie i C.
+Za pomocą programu codes1 (codes1.py) po wpisaniu kodu pocztowego
+zostają wyświetlone wszystkie informacje o tym kodzie.
+W programie codes2 (codes2.py) można wyszukać kod pocztowy wybranej
+miejscowości, województwa i ulicy.
+W programie postc (postc.c) można przeglądać informację o kodach
+pocztowych podając pod pocztowy lub nazwę miejscowości.
 
 # Copyright and license
 
