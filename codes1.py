@@ -1,8 +1,8 @@
 #    File:     codes1.py
-#    Version:  1.1
-#    Date:     February 24, 2019
+#    Version:  1.2
+#    Date:     July 24, 2026
 #    Author:   Michal Babik <michalb1981@o2.pl>
-#    Copyright (C) 2016-2019 Michal Babik
+#    Copyright (C) 2016-2026 Michal Babik
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-import sqlite3
 from pcodespl import sql_get_post_code_info
 #-----------------------------------------------------------------------------#
 class AppWindow(Gtk.Window):
@@ -30,12 +29,12 @@ class AppWindow(Gtk.Window):
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_default_size(800, 600)
         vbox1 = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
-        hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
+        # hbox1 = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=0)
         grid = Gtk.Grid()
         grid.set_orientation(Gtk.Orientation.HORIZONTAL)
         grid.set_column_spacing(8)
-        grid.set_margin_start(8);
-        grid.set_margin_end(8);
+        grid.set_margin_start(8)
+        grid.set_margin_end(8)
         self.en1 = Gtk.Entry()
         self.en1.set_max_length(2)
         self.en1.set_width_chars(2)

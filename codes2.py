@@ -1,8 +1,8 @@
 #    File:     codes2.py
-#    Version:  1.1
-#    Date:     February 24, 2019
+#    Version:  1.2
+#    Date:     July 24, 2026
 #    Author:   Michal Babik <michalb1981@o2.pl>
-#    Copyright (C) 2016-2019 Michal Babik
+#    Copyright (C) 2016-2026 Michal Babik
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
-import sqlite3
 from pcodespl import sql_get_city_names_like, sql_get_city_voivodeship, \
                      sql_get_info
 #-----------------------------------------------------------------------------#
@@ -38,8 +37,8 @@ class AppWindow(Gtk.Window):
         grid = Gtk.Grid()
         grid.set_orientation(Gtk.Orientation.HORIZONTAL)
         grid.set_column_spacing(8)
-        grid.set_margin_start(8);
-        grid.set_margin_end(8);
+        grid.set_margin_start(8)
+        grid.set_margin_end(8)
 
         lab = Gtk.Label()
         lab.set_markup("<b><i>Enter and select Place name, "
@@ -99,11 +98,12 @@ class AppWindow(Gtk.Window):
         self.connect("destroy", Gtk.main_quit)
     #-------------------------------------------------------------------------#
     def on_city_combo_changed(self, combo):
-        if self.ching: return
+        if self.ching:
+            return
         self.ching = True
         try:
             itr = combo.get_active_iter()
-            if itr != None:
+            if itr is not None:
                 model = combo.get_model()
                 row_id, name = model[itr][:2]
                 self.ct_id = row_id
@@ -128,14 +128,16 @@ class AppWindow(Gtk.Window):
                     if not r: 
                         self.ching = False
                         return
-                    for i in d: model.append(i)
-                else: model.clear()
+                    for i in d:
+                        model.append(i)
+                else:
+                    model.clear()
         finally:
             self.ching = False
     #-------------------------------------------------------------------------#
     def on_voivo_combo_changed(self, combo):
         itr = combo.get_active_iter()
-        if itr != None:
+        if itr is not None:
             model = combo.get_model()
             row_id, name = model[itr][:2]
             self.voiv_id = row_id
@@ -144,7 +146,8 @@ class AppWindow(Gtk.Window):
     #-------------------------------------------------------------------------#
     def street_entry_changed(self, entry):
         en_len = len(entry.get_text())
-        if en_len > 2 or self.pre_len > 2: self.refresh_data_list()
+        if en_len > 2 or self.pre_len > 2:
+            self.refresh_data_list()
         self.pre_len = en_len
         return
     #-------------------------------------------------------------------------#
@@ -152,7 +155,8 @@ class AppWindow(Gtk.Window):
         if self.ct_id > 0 and self.voiv_id > 0:
             en_txt = self.street_entry.get_text()
             to_sql_street = ''
-            if len(en_txt) > 2: to_sql_street = en_txt
+            if len(en_txt) > 2:
+                to_sql_street = en_txt
             r, d = sql_get_info(self.ct_id, self.voiv_id, to_sql_street)
             if r:
                 self.model.clear()
