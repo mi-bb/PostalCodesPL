@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 #    File:     codes1.py
 #    Version:  1.1
 #    Date:     February 24, 2019

@@ -1,0 +1,5 @@
+*.o
+/postc
+/tests/test_postc
+__pycache__/
+*.pyc
