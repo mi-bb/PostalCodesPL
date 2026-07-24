@@ -79,10 +79,10 @@ class AppWindow(Gtk.Window):
                 r, d = sql_get_post_code_info(tx1, tx2)
                 if r:
                     self.model.clear()
-                    for i in d: self.model.append(i)
+                    for i in d:
+                        self.model.append(i)
             self.get_ancestor(Gtk.Window).do_move_focus(
                 self.get_ancestor(Gtk.Window), Gtk.DirectionType.TAB_FORWARD)
-        return
 #-----------------------------------------------------------------------------#
 def infodial(widget, t):
     md = Gtk.MessageDialog(widget,

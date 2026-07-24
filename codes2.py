@@ -142,14 +142,12 @@ class AppWindow(Gtk.Window):
             row_id, name = model[itr][:2]
             self.voiv_id = row_id
             self.refresh_data_list()
-        return
     #-------------------------------------------------------------------------#
     def street_entry_changed(self, entry):
         en_len = len(entry.get_text())
         if en_len > 2 or self.pre_len > 2:
             self.refresh_data_list()
         self.pre_len = en_len
-        return
     #-------------------------------------------------------------------------#
     def refresh_data_list(self):
         if self.ct_id > 0 and self.voiv_id > 0:
@@ -163,7 +161,6 @@ class AppWindow(Gtk.Window):
                 for i in d:
                     self.model.append(
                           (i[0] + '-' + i[1], i[2], i[3], i[4], i[5], i[6], ))
-        return
 #-----------------------------------------------------------------------------#
 if __name__ == "__main__":
     win = AppWindow()

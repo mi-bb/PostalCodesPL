@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 #
 #  ,---.          |         |    ,---.         |          ,---.|    
 #  |---',---.,---.|--- ,---.|    |    ,---.,---|,---.,---.|---'|    
@@ -6,10 +5,10 @@
 #  `    `---'`---'`---'`---^`---'`---'`---'`---'`---'`---'`    `---'
 #
 #    File:     pcodespl.py
-#    Version:  1.1
-#    Date:     February 24, 2019
+#    Version:  1.2
+#    Date:     July 24, 2026
 #    Author:   Michal Babik <michalb1981@o2.pl>
-#    Copyright (C) 2016-2019 Michal Babik
+#    Copyright (C) 2016-2026 Michal Babik
 #
 #    Information about postal codes based on data from the website
 #    http://www.kody-pocztowe.biz
@@ -82,12 +81,11 @@
 #-----------------------------------------------------------------------------#
 import sqlite3
 #-----------------------------------------------------------------------------#
-def b_dbop(bn=None):
+def b_dbop(db_file_name: str | None = None):
     """Open database file"""
-    if not bn: bn = 'pc_base.db'
-    con = sqlite3.connect(bn)
+    db_file_name = db_file_name or "pc_base.db"
+    con = sqlite3.connect(db_file_name)
     con.text_factory = str
-    c = con.cursor()
     return con
 #-----------------------------------------------------------------------------#
 def sql_command_get(cmd, args=(), bn=None):
@@ -105,17 +103,22 @@ def sql_command_exec(cmd, args=(), rett=False, bn=None, comm=True):
         con = b_dbop(bn)
         c = con.cursor()
         c.execute(cmd, args)
-        if rett: ret[1] = c.fetchall()
-        if comm: con.commit()
+        if rett:
+            ret[1] = c.fetchall()
+        if comm:
+            con.commit()
     except sqlite3.Error as e:
         print("An error occurred:", e)
-        con.rollback()
+        if con:
+            con.rollback()
         ret[1] = e
     else:
         ret[0] = True
     finally:
-        if c: c.close()
-        if con: con.close()
+        if c:
+            c.close()
+        if con:
+            con.close()
     return ret
 #-----------------------------------------------------------------------------#
 def sql_get_post_code_info(code1, code2):
