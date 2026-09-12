@@ -3,29 +3,13 @@
 #  |    |   |`---.|    ,---||    |    |   ||   ||---'`---.|    |    
 #  `    `---'`---'`---'`---^`---'`---'`---'`---'`---'`---'`    `---'
 #
-#    File:     pcodespl.py
-#    Version:  1.2.0
-#    Date:     July 24, 2026
-#    Author:   Michal Babik <michal.babik@protonmail.com>
-#    Copyright (C) 2016-2026 Michal Babik
+# Copyright (c) 2016-2026 Michal Babik
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
-#    Information about postal codes based on data from the website
-#    http://www.kody-pocztowe.biz
-#    Informacje o kodach pocztowych na postawie danych
-#    ze strony http://www.kody-pocztowe.biz
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# Information about postal codes based on data from the website
+# http://www.kody-pocztowe.biz
+# Informacje o kodach pocztowych na postawie danych
+# ze strony http://www.kody-pocztowe.biz
 #-----------------------------------------------------------------------------#
 #                      SQLite tables used in database                         #
 #-----------------------------------------------------------------------------#
@@ -79,10 +63,12 @@
 #                                                                             #
 #-----------------------------------------------------------------------------#
 import sqlite3
+
+DATABASE_FILE_NAME = "pc_base.db"
 #-----------------------------------------------------------------------------#
-def b_dbop(db_file_name: str | None = None):
+def db_open(db_file_name: str | None = None):
     """Open database file"""
-    db_file_name = db_file_name or "pc_base.db"
+    db_file_name = db_file_name or DATABASE_FILE_NAME
     con = sqlite3.connect(db_file_name)
     con.text_factory = str
     return con
@@ -93,34 +79,41 @@ def sql_command_get(cmd, args=(), bn=None):
 def sql_command_save(cmd, args=(), bn=None):
     return sql_command_exec(cmd, args, False, bn, True)
 #-----------------------------------------------------------------------------#
-def sql_command_exec(cmd, args=(), rett=False, bn=None, comm=True):
+def sql_command_exec(cmd, args=(), return_result=False, bn=None, comm=True
+                     ) -> tuple[bool, list | str]:
     """Execute sqlite command"""
-    ret = [False, None]
+    return_status = False
+    return_value: list | str = []
+    #ret = [False, None]
     c = None
     con = None
     try:
-        con = b_dbop(bn)
+        con = db_open(bn)
         c = con.cursor()
         c.execute(cmd, args)
-        if rett:
-            ret[1] = c.fetchall()
+        if return_result:
+            return_value = c.fetchall()
+            #ret[1] = c.fetchall()
         if comm:
             con.commit()
     except sqlite3.Error as e:
         print("An error occurred:", e)
         if con:
             con.rollback()
-        ret[1] = e
+        return_value = str(e)
+        #ret[1] = str(e)
     else:
-        ret[0] = True
+        #ret[0] = True
+        return_status = True
     finally:
         if c:
             c.close()
         if con:
             con.close()
-    return ret
+    return return_status, return_value
+    #return ret
 #-----------------------------------------------------------------------------#
-def sql_get_post_code_info(code1, code2):
+def sql_get_post_code_info(code1: str, code2: str):
     r, dt = sql_command_get(
             """select city_name, city_detcr, street_name, street_number, 
             post_un, voivodeship from post_codes inner join city on 
@@ -133,14 +126,14 @@ def sql_get_post_code_info(code1, code2):
             (code1, code2,))
     return r, dt
 #-----------------------------------------------------------------------------#
-def sql_get_city_voivodeship(c_id):
+def sql_get_city_voivodeship(city_id: int):
     r, dt = sql_command_get(
             """select voivod.id, voivodeship from voivod inner join post_codes
             on voivod.id = post_codes.voivod_id where city_id = ? order by
-            voivodeship""", (c_id,))
+            voivodeship""", (city_id,))
     return r, dt
 #-----------------------------------------------------------------------------#
-def sql_get_info(c_id, v_id, street_txt):
+def sql_get_info(city_id: int, voivodeship_id: int, street_name: str):
     r, dt = sql_command_get(
             """select code1, code2, city_name, city_detcr, street_name,
             street_number, post_un, voivodeship from post_codes inner join city
@@ -150,13 +143,13 @@ def sql_get_info(c_id, v_id, street_txt):
             post_codes.city_det_id = city_det.id inner join voivod on 
             post_codes.voivod_id = voivod.id where city.id=? and voivod.id=?
             and street.street_name like ? order by code1, code2""",
-            (c_id, v_id, '%' + street_txt + '%',))
+            (city_id, voivodeship_id, '%' + street_name + '%',))
     return r, dt
 #-----------------------------------------------------------------------------#
-def sql_get_city_names_like(c_name):
+def sql_get_city_names_like(city_name: str):
     r, dt = sql_command_get(
             """select * from city where city_name like ? order by city_name""",
-            ('%' + c_name + '%',))
+            ('%' + city_name + '%',))
     return r, dt
 #-----------------------------------------------------------------------------#
 
