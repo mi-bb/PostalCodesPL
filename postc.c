@@ -26,7 +26,7 @@
  *
  * @date February 24, 2019
  * @version 1.1
- * @author Michal Babik <michalb1981@o2.pl>
+ * @author Michal Babik <michal.babik@protonmail.com>
  */
 #include <stdio.h>
 #include <stdint.h>

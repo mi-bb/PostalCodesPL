@@ -8,7 +8,7 @@
 #    File:     pcodespl.py
 #    Version:  1.1
 #    Date:     February 24, 2019
-#    Author:   Michal Babik <michalb1981@o2.pl>
+#    Author:   Michal Babik <michal.babik@protonmail.com>
 #    Copyright (C) 2016-2019 Michal Babik
 #
 #    Information about postal codes based on data from the website

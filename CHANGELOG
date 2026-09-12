@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
-2019-02-22  Michal Babik  <michalb1981@o2.pl>
+2019-02-22  Michal Babik  <michal.babik@protonmail.com>
 
         * postc.c: File added to package
         * utf8.c: File added to package
@@ -23,7 +23,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
         * codes2.py: Changed language to English
 
 
-2019-01-28  Michal Babik  <michalb1981@o2.pl>
+2019-01-28  Michal Babik  <michal.babik@protonmail.com>
 
         * pcodespl.py: Changed name from pyKodyPocztowe to PostalCodesPL
         * codes1: Changed Python execute command from python to python3
