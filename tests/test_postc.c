@@ -28,7 +28,7 @@
 #include "unity/unity.h"
 
 #define main postc_main_unused
-#include "../postc.c"
+#include "../src/postc.c"
 #undef main
 
 void

@@ -12,4 +12,4 @@ else
     exit 1
 fi
 
-exec "${PYTHON}" -O codes1.py "$@"
+exec "${PYTHON}" -O src/codes1.py "$@"
