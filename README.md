@@ -6,6 +6,9 @@ This project contains an SQLite database file with details of Polish postal code
 (city names, street names, voivodeship info).
 The package contains examples in C and Python showing how to use the database.
 
+<img src="other/screen_1.png" alt="Screenshot 1" style="height: 250;">
+<img src="other/screen_2.png" alt="Screenshot 2" style="height: 250;">
+
 ## Requirements
 
  * SQLite 3
