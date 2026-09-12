@@ -21,6 +21,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-09-12
+
+### Added
+- AGENTS.md: Added guidance file for AI coding assistants
+- .gitignore: Added to exclude __pycache__/
+- codes1, codes2: Wrappers now detect Python interpreter (python3 or python),
+  with an error message if neither is found
+
+### Changed
+- codes1.py, codes2.py, pcodespl.py, postc.c: Bumped version to 1.2.0
+- codes1.py, codes2.py, pcodespl.py, postc.c: Updated author email address
+- pcodespl.py: Refactored b_dbop with type hints and clearer parameter name;
+  guarded rollback/close in sql_command_exec against failed connection
+- codes1.py, codes2.py: Code style cleanup (is not None comparisons,
+  multi-line statements, removed trailing semicolons)
+- README.md: Fixed heading hierarchy and grammar in English and Polish sections
+
+### Removed
+- codes1.py, codes2.py: Removed unused sqlite3 import
+- pcodespl.py: Removed redundant UTF-8 coding declaration (Python 3 default)
+
 ## [2026-07-23]
 
 ### Added
