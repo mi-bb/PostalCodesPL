@@ -1,5 +1,9 @@
 # PostalCodesPL
 
+[![Release](https://img.shields.io/github/v/release/mi-bb/PostalCodesPL?include_prereleases&style=)](https://github.com/mi-bb/PostalCodesPL/releases/)
+![Licence](https://img.shields.io/github/license/mi-bb/PostalCodesPL)
+![Last Commit](https://img.shields.io/github/last-commit/mi-bb/PostalCodesPL)
+
 Database with Polish postal codes.
 
 This project contains an SQLite database file with details of Polish postal codes
