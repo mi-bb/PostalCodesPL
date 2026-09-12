@@ -1,0 +1,42 @@
+Copyright (C) 2016-2019 Michal Babik
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2019-02-22]
+
+### Added
+- postc.c: File added to package
+- utf8.c: File added to package
+- utf8.h: File added to package
+
+### Changed
+- codes1.py: Changed language to English
+- codes2.py: Changed language to English
+
+## [2019-01-28]
+
+### Changed
+- pcodespl.py: Changed name from pyKodyPocztowe to PostalCodesPL
+- codes1: Changed Python execute command from python to python3
+- codes2: Changed Python execute command from python to python3
+- codes1.py: Changed deprecated pygtk functions to operating ones
+- codes2.py: Changed deprecated pygtk functions to operating ones
