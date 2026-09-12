@@ -5,7 +5,7 @@
  *  `    `---'`---'`---'`---^`---'`---'`---'`---'`---'`---'`    `---'
  *
  * @file  postc.c
- * @copyright Copyright (C) 2019 Michal Babik
+ * @copyright Copyright (C) 2019-2026 Michal Babik
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
  *
  * Example usr of postal codes sqlite database in c.
  *
- * @date February 24, 2019
+ * @date July 23, 2026
  * @version 1.2.0
  * @author Michal Babik <michal.babik@protonmail.com>
  */
@@ -128,18 +128,24 @@ get_post_code_info (Postal_data **pd_data,
     rc = sqlite3_open ("pc_base.db", &db);
     if (rc) {
         fprintf (stderr, "Can't open database: %s\n", sqlite3_errmsg (db));
+        sqlite3_close (db);
         return 0;
     }
     sqlite3_stmt *res;
-    sqlite3_prepare_v2 (db, sql_c, -1, &res, NULL);
-    
+    rc = sqlite3_prepare_v2 (db, sql_c, -1, &res, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf (stderr, "Can't prepare query: %s\n", sqlite3_errmsg (db));
+        sqlite3_close (db);
+        return 0;
+    }
+
     sqlite3_bind_text (res, 1, code1, -1, SQLITE_STATIC);
     sqlite3_bind_text (res, 2, code2, -1, SQLITE_STATIC);
-    
+
     rc = sqlite3_step (res);
-    while (rc != SQLITE_DONE) {
+    while (rc == SQLITE_ROW) {
         i_rcnt++;
-        if (pd_data == NULL) {
+        if (*pd_data == NULL) {
             *pd_data = malloc (sizeof (Postal_data));
             clear_pdata (*pd_data);
         }
@@ -147,23 +153,27 @@ get_post_code_info (Postal_data **pd_data,
             *pd_data = realloc (*pd_data, i_rcnt * sizeof (Postal_data));
             clear_pdata (& (*pd_data)[i_rcnt-1]);
         }
-        sprintf ( (*pd_data)[i_rcnt-1].code1, "%s", code1);
-        sprintf ( (*pd_data)[i_rcnt-1].code2, "%s", code2);
-        sprintf ( (*pd_data)[i_rcnt-1].city_name, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].code1, sizeof ((*pd_data)[i_rcnt-1].code1), "%s", code1);
+        snprintf ( (*pd_data)[i_rcnt-1].code2, sizeof ((*pd_data)[i_rcnt-1].code2), "%s", code2);
+        snprintf ( (*pd_data)[i_rcnt-1].city_name, sizeof ((*pd_data)[i_rcnt-1].city_name), "%s",
                 sqlite3_column_text (res, 0));
-        sprintf ( (*pd_data)[i_rcnt-1].city_detcr, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].city_detcr, sizeof ((*pd_data)[i_rcnt-1].city_detcr), "%s",
                 sqlite3_column_text (res, 1));
-        sprintf ( (*pd_data)[i_rcnt-1].street_name, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].street_name, sizeof ((*pd_data)[i_rcnt-1].street_name), "%s",
                 sqlite3_column_text (res, 2));
-        sprintf ( (*pd_data)[i_rcnt-1].street_number, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].street_number, sizeof ((*pd_data)[i_rcnt-1].street_number), "%s",
                 sqlite3_column_text (res, 3));
-        sprintf ( (*pd_data)[i_rcnt-1].post_un, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].post_un, sizeof ((*pd_data)[i_rcnt-1].post_un), "%s",
                 sqlite3_column_text (res, 4));
-        sprintf ( (*pd_data)[i_rcnt-1].voivodeship, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].voivodeship, sizeof ((*pd_data)[i_rcnt-1].voivodeship), "%s",
                 sqlite3_column_text (res, 5));
         rc = sqlite3_step (res);
         }
+    if (rc != SQLITE_DONE) {
+        fprintf (stderr, "Query failed: %s\n", sqlite3_errmsg (db));
+    }
 	sqlite3_finalize (res);
+    sqlite3_close (db);
     return i_rcnt;
 }
 /*----------------------------------------------------------------------------*/
@@ -193,17 +203,23 @@ get_city_names_like (City_data **c_data,
     rc = sqlite3_open ("pc_base.db", &db);
     if (rc) {
         fprintf (stderr, "Can't open database: %s\n", sqlite3_errmsg (db));
+        sqlite3_close (db);
         return 0;
     }
     sqlite3_stmt *res;
-    sqlite3_prepare_v2 (db, sql_c, -1, &res, NULL);
-    
+    rc = sqlite3_prepare_v2 (db, sql_c, -1, &res, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf (stderr, "Can't prepare query: %s\n", sqlite3_errmsg (db));
+        sqlite3_close (db);
+        return 0;
+    }
+
     sqlite3_bind_text (res, 1, ch_city, -1, SQLITE_STATIC);
 
     rc = sqlite3_step (res);
-    while (rc != SQLITE_DONE) {
+    while (rc == SQLITE_ROW) {
         i_rcnt++;
-        if (c_data == NULL) {
+        if (*c_data == NULL) {
             *c_data = malloc (sizeof (City_data));
             clear_cdata (*c_data);
         }
@@ -213,14 +229,18 @@ get_city_names_like (City_data **c_data,
         }
         (*c_data)[i_rcnt-1].i_no = i_rcnt;
         (*c_data)[i_rcnt-1].i_id = sqlite3_column_int (res, 0);
-        sprintf ( (*c_data)[i_rcnt-1].city_name, "%s",
+        snprintf ( (*c_data)[i_rcnt-1].city_name, sizeof ((*c_data)[i_rcnt-1].city_name), "%s",
                 sqlite3_column_text (res, 1));
         (*c_data)[i_rcnt-1].voivod_id = sqlite3_column_int (res, 2);
-        sprintf ( (*c_data)[i_rcnt-1].voivodeship, "%s",
+        snprintf ( (*c_data)[i_rcnt-1].voivodeship, sizeof ((*c_data)[i_rcnt-1].voivodeship), "%s",
                 sqlite3_column_text (res, 3));
         rc = sqlite3_step (res);
         }
+    if (rc != SQLITE_DONE) {
+        fprintf (stderr, "Query failed: %s\n", sqlite3_errmsg (db));
+    }
 	sqlite3_finalize (res);
+    sqlite3_close (db);
     return i_rcnt;
 }
 /*----------------------------------------------------------------------------*/
@@ -257,18 +277,24 @@ get_city_voivodeship_info (Postal_data **pd_data,
     rc = sqlite3_open ("pc_base.db", &db);
     if (rc) {
         fprintf (stderr, "Can't open database: %s\n", sqlite3_errmsg (db));
+        sqlite3_close (db);
         return 0;
     }
     sqlite3_stmt *res;
-    sqlite3_prepare_v2 (db, sql_c, -1, &res, NULL);
-    
+    rc = sqlite3_prepare_v2 (db, sql_c, -1, &res, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf (stderr, "Can't prepare query: %s\n", sqlite3_errmsg (db));
+        sqlite3_close (db);
+        return 0;
+    }
+
     sqlite3_bind_int (res, 1, i_cid);
     sqlite3_bind_int (res, 2, i_vid);
 
     rc = sqlite3_step (res);
-    while (rc != SQLITE_DONE) {
+    while (rc == SQLITE_ROW) {
         i_rcnt++;
-        if (pd_data == NULL) {
+        if (*pd_data == NULL) {
             *pd_data = malloc (sizeof (Postal_data));
             clear_pdata (*pd_data);
         }
@@ -276,25 +302,29 @@ get_city_voivodeship_info (Postal_data **pd_data,
             *pd_data = realloc (*pd_data, i_rcnt * sizeof (Postal_data));
             clear_pdata (& (*pd_data)[i_rcnt-1]);
         }
-        sprintf ( (*pd_data)[i_rcnt-1].code1, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].code1, sizeof ((*pd_data)[i_rcnt-1].code1), "%s",
                 sqlite3_column_text (res, 0));
-        sprintf ( (*pd_data)[i_rcnt-1].code2, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].code2, sizeof ((*pd_data)[i_rcnt-1].code2), "%s",
                 sqlite3_column_text (res, 1));
-        sprintf ( (*pd_data)[i_rcnt-1].city_name, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].city_name, sizeof ((*pd_data)[i_rcnt-1].city_name), "%s",
                 sqlite3_column_text (res, 2));
-        sprintf ( (*pd_data)[i_rcnt-1].city_detcr, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].city_detcr, sizeof ((*pd_data)[i_rcnt-1].city_detcr), "%s",
                 sqlite3_column_text (res, 3));
-        sprintf ( (*pd_data)[i_rcnt-1].street_name, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].street_name, sizeof ((*pd_data)[i_rcnt-1].street_name), "%s",
                 sqlite3_column_text (res, 4));
-        sprintf ( (*pd_data)[i_rcnt-1].street_number, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].street_number, sizeof ((*pd_data)[i_rcnt-1].street_number), "%s",
                 sqlite3_column_text (res, 5));
-        sprintf ( (*pd_data)[i_rcnt-1].post_un, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].post_un, sizeof ((*pd_data)[i_rcnt-1].post_un), "%s",
                 sqlite3_column_text (res, 6));
-        sprintf ( (*pd_data)[i_rcnt-1].voivodeship, "%s",
+        snprintf ( (*pd_data)[i_rcnt-1].voivodeship, sizeof ((*pd_data)[i_rcnt-1].voivodeship), "%s",
                 sqlite3_column_text (res, 7));
         rc = sqlite3_step (res);
         }
+    if (rc != SQLITE_DONE) {
+        fprintf (stderr, "Query failed: %s\n", sqlite3_errmsg (db));
+    }
 	sqlite3_finalize (res);
+    sqlite3_close (db);
     return i_rcnt;
 }
 /*----------------------------------------------------------------------------*/
@@ -367,7 +397,7 @@ print_all_info (Postal_data *pd_data,
         printf (" ");
     if (i_w[2] > 0) {
         printf (" | Place det.");
-        for (uint16_t j = 0; j < i_w[2] - 8; ++j)
+        for (uint16_t j = 0; j < i_w[2] - 10; ++j)
             printf (" ");
     }
     printf (" | Street");
@@ -486,6 +516,7 @@ get_show_info_by_city_street (void)
     char ch_city_t[35];
     char ch_city[37];
 
+    memset (ch_city_t, 0, sizeof (ch_city_t));
     memset (ch_city, 0, sizeof (ch_city));
     printf ("Enter place name   : ");
     i_sres = scanf ("%34s", ch_city_t);
@@ -507,7 +538,7 @@ get_show_info_by_city_street (void)
     }
     print_city_data (c_data, i_rcnt);
     if (i_rcnt > 1) {
-        printf ("Choose the place [1-%hd]: ", i_rcnt);
+        printf ("Choose the place [1-%hu]: ", i_rcnt);
         i_sres = scanf ("%d", &i_city);
         printf ("\n");
         if (i_sres == 0 || i_city > i_rcnt || i_city == 0) {
@@ -560,6 +591,7 @@ main (void)
     else {
         printf ("Wrong answer !\n");
     }
+    return 0;
 }
 /*----------------------------------------------------------------------------*/
 

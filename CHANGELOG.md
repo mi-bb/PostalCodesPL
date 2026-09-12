@@ -1,4 +1,4 @@
-Copyright (C) 2016-2019 Michal Babik
+Copyright (C) 2016-2026 Michal Babik
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,6 +20,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [2026-07-23]
+
+### Added
+- postc.c: Added error handling for failed query preparation
+- postc.c: Added missing buffer initialization in get_show_info_by_city_street
+- tests/: Added Unity-based unit test suite for postc.c
+- CLAUDE.md: Added guidance file for AI coding assistants
+
+### Fixed
+- postc.c: Replaced sprintf with bounded snprintf when filling result rows
+- postc.c: Fixed result loops to stop on query error instead of looping forever
+- postc.c: Fixed null checks in get_post_code_info/get_city_names_like/
+  get_city_voivodeship_info that tested the wrong pointer
+- postc.c: Fixed place-count format specifier and column width padding
+
+### Changed
+- postc.c: Added explicit return 0 in main
+- codes1.py: Removed redundant UTF-8 coding declaration (Python 3 default)
+- codes2.py: Removed redundant UTF-8 coding declaration (Python 3 default)
 
 ## [2019-02-22]
 
