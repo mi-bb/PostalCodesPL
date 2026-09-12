@@ -1,6 +1,5 @@
-# -*- coding: UTF-8 -*-
 #    File:     codes2.py
-#    Version:  1.1
+#    Version:  1.2.0
 #    Date:     February 24, 2019
 #    Author:   Michal Babik <michal.babik@protonmail.com>
 #    Copyright (C) 2016-2019 Michal Babik

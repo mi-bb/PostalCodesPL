@@ -25,7 +25,7 @@
  * Example usr of postal codes sqlite database in c.
  *
  * @date February 24, 2019
- * @version 1.1
+ * @version 1.2.0
  * @author Michal Babik <michal.babik@protonmail.com>
  */
 #include <stdio.h>
