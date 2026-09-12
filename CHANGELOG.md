@@ -37,10 +37,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - codes1.py, codes2.py: Code style cleanup (is not None comparisons,
   multi-line statements, removed trailing semicolons)
 - README.md: Fixed heading hierarchy and grammar in English and Polish sections
+- postc.c: Updated the gcc command in the header comment to the src/ paths
 
 ### Removed
 - codes1.py, codes2.py: Removed unused sqlite3 import
 - pcodespl.py: Removed redundant UTF-8 coding declaration (Python 3 default)
+- pc_base.db: Dropped the unused, empty post_codes1 table (denormalized
+  leftover; 0 rows, referenced by no code)
 
 ## [2026-07-23]
 
