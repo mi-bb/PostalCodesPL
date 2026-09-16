@@ -47,7 +47,7 @@ pocztowych podając kod pocztowy lub nazwę miejscowości.
 
 ## Copyright and license
 
-Copyright (C) 2016-2026 Michal Babik
+Copyright (C) 2019-2026 Michal Babik
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

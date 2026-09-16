@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2026 Michal Babik
+# Copyright (c) 2019-2026 Michal Babik
 # SPDX-License-Identifier: GPL-3.0-or-later
 #-----------------------------------------------------------------------------#
 import gi

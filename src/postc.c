@@ -5,7 +5,6 @@
  *  `    `---'`---'`---'`---^`---'`---'`---'`---'`---'`---'`    `---'
  *
  * @file postc.c
- * @version 1.2.0
  * @author Michal Babik <michal.babik@protonmail.com>
  * @copyright Copyright (C) 2019-2026 Michal Babik. Licensed under GPL-3.0 License.
  *
@@ -379,7 +378,7 @@ print_all_info (Postal_data *pd_data,
     get_pd_column_width (pd_data, i_w, i_cnt);
     printf ("| Code  ");
     printf (" | Place");
-    for (uint16_t j = 0; j < i_w[0] + i_w[1] - 1; ++j)
+    for (uint16_t j = 0; j < i_w[0] + i_w[1] - 2; ++j)
         printf (" ");
     if (i_w[2] > 0) {
         printf (" | Place det.");
