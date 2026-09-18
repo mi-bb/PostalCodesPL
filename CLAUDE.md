@@ -17,21 +17,21 @@ this repo — treat it as read-only unless explicitly asked otherwise.
 
 ## Layout
 
-All source lives in `src/` (moved there in v1.2.0 — older docs/comments may still show root-level
-paths):
+All source lives in `examples/` (moved there in v1.3.0 — older docs/comments may still show
+`src/` or root-level paths):
 
-- `src/pcodespl.py` — shared Python data-access layer. Every SQLite call from the Python examples
-  goes through it: `sql_get_post_code_info`, `sql_get_city_voivodeship`, `sql_get_info`,
+- `examples/pcodespl.py` — shared Python data-access layer. Every SQLite call from the Python
+  examples goes through it: `sql_get_post_code_info`, `sql_get_city_voivodeship`, `sql_get_info`,
   `sql_get_city_names_like`, over the low-level `sql_command_get` / `sql_command_save` /
   `sql_command_exec` helpers.
-- `src/codes1.py` (run via `./codes1`) — GTK+ 3 app: enter a postal code (XX-XXX), see matching
-  places/streets.
-- `src/codes2.py` (run via `./codes2`) — GTK+ 3 app: pick city + voivodeship + optional street
-  filter to look up postal codes.
-- `src/postc.c` + `src/utf8.c` / `src/utf8.h` — terminal C program covering both Python tools in
-  one menu-driven binary. `utf8.c` (Jeff Bezanson's public-domain `utf8.c`) supplies UTF-8-aware
-  length/iteration used to align table output, since Polish city/street names are UTF-8 — column
-  widths must count codepoints, not bytes.
+- `examples/codes1.py` (run via `./codes1`) — GTK+ 3 app: enter a postal code (XX-XXX), see
+  matching places/streets.
+- `examples/codes2.py` (run via `./codes2`) — GTK+ 3 app: pick city + voivodeship + optional
+  street filter to look up postal codes.
+- `examples/postc.c` + `examples/utf8.c` / `examples/utf8.h` — terminal C program covering both
+  Python tools in one menu-driven binary. `utf8.c` (Jeff Bezanson's public-domain `utf8.c`)
+  supplies UTF-8-aware length/iteration used to align table output, since Polish city/street
+  names are UTF-8 — column widths must count codepoints, not bytes.
 - `tests/` — Unity test suite for `postc.c`; `tests/unity/` is vendored third-party MIT code.
 - `other/` — README screenshots.
 
@@ -40,7 +40,7 @@ code beyond the database itself.
 
 ## Database schema (`pc_base.db`)
 
-Documented in full in the header comment of `src/pcodespl.py`:
+Documented in full in the header comment of `examples/pcodespl.py`:
 
 - `post_codes` — central fact table: `code1` (2-char TEXT prefix), `code2` (3-char TEXT suffix),
   `city_id`, `city_det_id`, `street_id`, `street_no_id`, `post_un`, `voivod_id`.
@@ -59,27 +59,27 @@ one string. Every "full info" query inner-joins all five lookup tables against `
 ./codes2
 
 # C (needs GCC + libsqlite3-dev), from the repo root
-gcc -std=c11 -Wall src/postc.c src/utf8.c -lsqlite3 -o postc
+gcc -std=c11 -Wall examples/postc.c examples/utf8.c -lsqlite3 -o postc
 ./postc
 ```
 
 `codes1` / `codes2` are bash wrappers: they `cd` to the repo root, pick `python3` or `python`, then
-`exec` `python -O src/codesX.py`. They work from any cwd.
+`exec` `python -O examples/codesX.py`. They work from any cwd.
 
 **Everything opens `pc_base.db` by a path relative to the cwd, so run from the repo root.** In
 Python the path is overridable — `DATABASE_FILE_NAME` / the `db_file_name` argument to `db_open`,
 or the `bn` argument threaded through the `sql_command_*` helpers. In C it is not: `"pc_base.db"`
-is hardcoded at three separate `sqlite3_open` sites in `src/postc.c`.
+is hardcoded at three separate `sqlite3_open` sites in `examples/postc.c`.
 
 For headless verification without a display, import the library instead of launching a GUI:
 
 ```sh
-PYTHONPATH=src python3 -c "from pcodespl import sql_get_post_code_info; print(sql_get_post_code_info('01','001'))"
+PYTHONPATH=examples python3 -c "from pcodespl import sql_get_post_code_info; print(sql_get_post_code_info('01','001'))"
 # (True, [('Warszawa', 'Wola', 'Jana Pawła Ii Al.', 'numery od 41 do 43a nieparzyste', '', 'mazowieckie')])
 ```
 
-`PYTHONPATH=src` is only needed for this direct-import form; running `src/codes1.py` as a script
-puts `src/` on `sys.path` automatically.
+`PYTHONPATH=examples` is only needed for this direct-import form; running `examples/codes1.py`
+as a script puts `examples/` on `sys.path` automatically.
 
 ## Tests (`postc.c` only — the Python examples have none)
 
@@ -88,18 +88,18 @@ puts `src/` on `sys.path` automatically.
 ```
 
 13 tests, all passing as of v1.2.0. `tests/run_tests.sh` builds `tests/test_postc.c` +
-`src/utf8.c` + `tests/unity/unity.c` with `-std=c11 -Wall -Wno-unused-function`.
+`examples/utf8.c` + `tests/unity/unity.c` with `-std=c11 -Wall -Wno-unused-function`.
 
 Two things about this suite are deliberate and easy to "fix" wrongly:
 
-- **The include trick.** Nearly every function under test in `src/postc.c` — `clear_pdata`,
+- **The include trick.** Nearly every function under test in `examples/postc.c` — `clear_pdata`,
   `clear_cdata`, `get_pd_column_width`, `get_post_code_info`, `get_city_names_like`,
   `get_city_voivodeship_info` (all `static`; only `set_codes` is not) — is invisible to a normal
   link, and `postc.c` defines its own `main`. The test file therefore pulls the whole source in
-  (`#define main postc_main_unused`, then `#include "../src/postc.c"`) instead of linking against
-  it normally. **Do not** split `postc.c` into a header/module to make it "properly" testable; the
-  include trick is the intended way to reach these internals without widening production
-  visibility.
+  (`#define main postc_main_unused`, then `#include "../examples/postc.c"`) instead of linking
+  against it normally. **Do not** split `postc.c` into a header/module to make it "properly"
+  testable; the include trick is the intended way to reach these internals without widening
+  production visibility.
 - **The DB-backed tests hit the real committed `pc_base.db`** — no mocking of `sqlite3_*` — and
   assert specific rows and counts (postal code `01-001` → Warszawa/Wola; city `Kraków` → id
   `14381`). If the database is ever regenerated with different data, those expected values in
@@ -113,7 +113,8 @@ comment out the other `RUN_TEST` lines at the bottom of `tests/test_postc.c`.
 
 - **Python:** UTF-8, Python 3, type hints on new function signatures. Keep the `#---...---#`
   banner-style section dividers used throughout `pcodespl.py` / `codes1.py` / `codes2.py`. New DB
-  queries belong in `src/pcodespl.py`, never as direct `sqlite3` connections in the GTK files.
+  queries belong in `examples/pcodespl.py`, never as direct `sqlite3` connections in the GTK
+  files.
 - **The `(status, data)` contract:** every `sql_*` helper in `pcodespl.py` returns a
   `tuple[bool, list | str]` — success flag plus rows, or the error string on failure. SQL errors
   are caught, printed, and rolled back rather than raised, so callers must unpack both values and
