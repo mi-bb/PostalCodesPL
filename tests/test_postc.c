@@ -9,8 +9,8 @@
  * main renamed out of the way. This keeps postc.c itself untouched.
  *
  * DB-backed tests query the real pc_base.db checked into the repo, so they
- * must be run from the repository root (see tests/run_tests.sh) and assume
- * its data is unchanged for the specific codes/cities referenced below.
+ * must be run from the repository root (see `make test`) and assume its
+ * data is unchanged for the specific codes/cities referenced below.
  */
 #include "unity/unity.h"
 

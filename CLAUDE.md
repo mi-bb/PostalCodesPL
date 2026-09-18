@@ -9,9 +9,10 @@ districts, streets, street numbers, voivodeships — sourced from http://www.kod
 is defunct; do not try to fetch from it). Everything else in the repo is example client code, in
 Python and C, showing how to query that database.
 
-There is no build system, package manifest, linter config, or CI. `pc_base.db` (~5 MB, committed,
-123752 rows in `post_codes`) is the actual deliverable and is **not regenerable** from anything in
-this repo — treat it as read-only unless explicitly asked otherwise.
+There is no package manifest, linter config, or CI — just a root `Makefile` for the C example and
+its tests (Python has no build step). `pc_base.db` (~5 MB, committed, 123752 rows in `post_codes`)
+is the actual deliverable and is **not regenerable** from anything in this repo — treat it as
+read-only unless explicitly asked otherwise.
 
 `AGENTS.md` covers the same ground more briefly; keep the two in sync when either changes.
 
@@ -34,6 +35,8 @@ All source lives in `examples/` (moved there in v1.3.0 — older docs/comments m
   names are UTF-8 — column widths must count codepoints, not bytes.
 - `tests/` — Unity test suite for `postc.c`; `tests/unity/` is vendored third-party MIT code.
 - `other/` — README screenshots.
+- `Makefile` (repo root) — builds `postc` (`make`) and the test binary (`make test`); see
+  "Running the examples" and "Tests" below.
 
 The three programs are independent entry points onto the same schema; there is no shared C/Python
 code beyond the database itself.
@@ -59,7 +62,7 @@ one string. Every "full info" query inner-joins all five lookup tables against `
 ./codes2
 
 # C (needs GCC + libsqlite3-dev), from the repo root
-gcc -std=c11 -Wall examples/postc.c examples/utf8.c -lsqlite3 -o postc
+make
 ./postc
 ```
 
@@ -84,11 +87,12 @@ as a script puts `examples/` on `sys.path` automatically.
 ## Tests (`postc.c` only — the Python examples have none)
 
 ```sh
-./tests/run_tests.sh        # compiles and runs; cds to the repo root itself, works from any cwd
+make test        # builds and runs tests/test_postc; run from the repo root
 ```
 
-13 tests, all passing as of v1.2.0. `tests/run_tests.sh` builds `tests/test_postc.c` +
-`examples/utf8.c` + `tests/unity/unity.c` with `-std=c11 -Wall -Wno-unused-function`.
+13 tests, all passing as of v1.2.0. `make test` builds `tests/test_postc.c` +
+`examples/utf8.c` + `tests/unity/unity.c` with `-std=c11 -Wall -Wno-unused-function`
+(see the `Makefile` at the repo root).
 
 Two things about this suite are deliberate and easy to "fix" wrongly:
 

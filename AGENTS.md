@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Small repo around a committed SQLite database of Polish postal codes (`pc_base.db`) plus example client programs in Python (GTK+ 3) and C. No build system, linter, or CI — verify changes by running the programs and the test suite directly.
+Small repo around a committed SQLite database of Polish postal codes (`pc_base.db`) plus example client programs in Python (GTK+ 3) and C. A root `Makefile` builds the C example and tests; no linter or CI — verify changes by running the programs and the test suite directly.
 
 ## Layout
 
@@ -12,8 +12,8 @@ Small repo around a committed SQLite database of Polish postal codes (`pc_base.d
 
 - `./codes1` / `./codes2` are bash wrappers: they `cd` to the repo root, detect `python3` or `python`, then run `python -O examples/codesX.py`. They work from any cwd; run the `.py` files directly only from the repo root (`PYTHONPATH=examples python3 -O examples/codes1.py`), because the DB is opened by path relative to CWD.
 - GUI apps need a display and `python3-gi`. For headless verification, query the DB with `sqlite3` or import the library: `PYTHONPATH=examples python3 -c "from pcodespl import sql_get_post_code_info; print(sql_get_post_code_info('00','950'))"`.
-- C example (from repo root): `gcc -std=c11 -Wall examples/postc.c examples/utf8.c -lsqlite3 -o postc` — requires libsqlite3 headers (`libsqlite3-dev`). The same command is repeated in a comment near the top of `examples/postc.c`; keep the two in sync.
-- Tests: `tests/run_tests.sh` (compiles and runs them; cds to the repo root itself, so it works from any cwd). The DB-backed tests assert known rows from `pc_base.db` (e.g. code `01-001` → Warszawa/Wola); if the DB data ever changes, expected values in `tests/test_postc.c` need updating.
+- C example (from repo root): `make` — requires libsqlite3 headers (`libsqlite3-dev`). This wraps `gcc -std=c11 -Wall examples/postc.c examples/utf8.c -lsqlite3 -o postc`, also repeated in a comment near the top of `examples/postc.c`; keep the two in sync.
+- Tests: `make test` (compiles `tests/test_postc` and runs it; the `Makefile` is at the repo root, so run `make` from there). The DB-backed tests assert known rows from `pc_base.db` (e.g. code `01-001` → Warszawa/Wola); if the DB data ever changes, expected values in `tests/test_postc.c` need updating.
 - `tests/test_postc.c` reaches `static` functions by `#define main postc_main_unused` + `#include "../examples/postc.c"`. Do not split `postc.c` into headers/modules to make it "properly" testable — the include trick is intended.
 
 ## Database
