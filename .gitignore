@@ -1,5 +1,5 @@
 *.o
 /postc
 /tests/test_postc
-/src/__pycache__/
+/examples/__pycache__/
 *.pyc
