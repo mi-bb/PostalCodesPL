@@ -9,7 +9,7 @@ PDIR=$(dirname "$0")
 cd "${PDIR}/.."
 
 gcc -std=c11 -Wall -Wno-unused-function \
-    tests/test_postc.c src/utf8.c tests/unity/unity.c \
+    tests/test_postc.c examples/utf8.c tests/unity/unity.c \
     -lsqlite3 -o tests/test_postc
 
 exec ./tests/test_postc

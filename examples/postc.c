@@ -20,7 +20,7 @@
 #include <string.h>
 #include "utf8.h"
 /*----------------------------------------------------------------------------*/
-/* gcc -std=c11 -Wall src/postc.c src/utf8.c -lsqlite3 -o postc               */
+/* gcc -std=c11 -Wall examples/postc.c examples/utf8.c -lsqlite3 -o postc               */
 /*----------------------------------------------------------------------------*/
 /**
  * @brief  Postal code info structure

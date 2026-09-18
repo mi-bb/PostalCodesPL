@@ -3,6 +3,7 @@
 [![Release](https://img.shields.io/github/v/release/mi-bb/PostalCodesPL?include_prereleases&style=)](https://github.com/mi-bb/PostalCodesPL/releases/)
 ![Licence](https://img.shields.io/github/license/mi-bb/PostalCodesPL)
 ![Last Commit](https://img.shields.io/github/last-commit/mi-bb/PostalCodesPL)
+[![SQLite](https://img.shields.io/badge/SQLite-%2307405e.svg?logo=sqlite&logoColor=white)](https://sqlite.org)
 
 Database with Polish postal codes.
 
@@ -14,21 +15,21 @@ The package contains examples in C and Python showing how to use the database.
 
 ## Requirements
 
- * SQLite 3
+* SQLite 3
 
 OS:
 
- * GNU/Linux
- * Windows
+* GNU/Linux
+* Windows
 
 ### Requirements (C examples)
 
- * GCC
+* GCC
 
 ### Requirements (Python examples)
 
- * Python 3
- * GTK+ 3
+* Python 3
+* GTK+ 3
 
 ## PostalCodesPL (polski)
 
@@ -45,19 +46,8 @@ miejscowości, województwa i ulicy.
 W programie postc (postc.c) można przeglądać informacje o kodach
 pocztowych podając kod pocztowy lub nazwę miejscowości.
 
-## Copyright and license
+## Copyright and License
 
 Copyright (C) 2019-2026 Michal Babik
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
+This project is licensed under the GPL-3.0 License — see [COPYING](COPYING) for details.
